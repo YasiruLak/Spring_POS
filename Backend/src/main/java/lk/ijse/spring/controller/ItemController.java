@@ -40,4 +40,10 @@ public class ItemController {
         itemService.deleteItem(id);
         return new ResponseUtil(200,"Deleted",null);
     }
+
+    @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil searchItem(@PathVariable String id){
+        ItemDTO itemDTO = itemService.searchItem(id);
+        return new ResponseUtil(200,"Found",itemDTO);
+    }
 }

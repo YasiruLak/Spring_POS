@@ -60,7 +60,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemDTO searchItem(String id) {
-        return null;
+        if (itemRepo.existsById(id)){
+            Item item = itemRepo.findById(id).get();
+            return mapper.map(item, ItemDTO.class);
+        }else{
+            throw new RuntimeException("No Item For "+id+" ..!");
+        }
     }
 
     @Override
