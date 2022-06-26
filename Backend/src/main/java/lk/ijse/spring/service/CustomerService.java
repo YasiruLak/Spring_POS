@@ -1,5 +1,9 @@
 package lk.ijse.spring.service;
 
+import lk.ijse.spring.dto.CustomerDTO;
+
+import java.util.List;
+
 /**
  * @author : Yasiru Dahanayaka
  * @name : Spring_POS
@@ -9,4 +13,9 @@ package lk.ijse.spring.service;
  * @since : 0.1.0
  **/
 public interface CustomerService {
+    void saveCustomer(CustomerDTO dto);
+    void deleteCustomer(String id);
+    void updateCustomer(CustomerDTO dto);
+    CustomerDTO searchCustomer(String id);
+    List<CustomerDTO> getAllCustomers();
 }
