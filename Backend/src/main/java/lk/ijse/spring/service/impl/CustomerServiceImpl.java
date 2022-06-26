@@ -1,6 +1,7 @@
 package lk.ijse.spring.service.impl;
 
 import lk.ijse.spring.dto.CustomerDTO;
+import lk.ijse.spring.entity.Customer;
 import lk.ijse.spring.repo.CustomerRepo;
 import lk.ijse.spring.service.CustomerService;
 import org.modelmapper.ModelMapper;
@@ -31,7 +32,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void saveCustomer(CustomerDTO dto) {
-
+        if (!repo.existsById(dto.getId())){
+            repo.save(mapper.map(dto, Customer.class));
+        }else {
+            throw new RuntimeException("Customer Already Exists");
+        }
     }
 
     @Override
