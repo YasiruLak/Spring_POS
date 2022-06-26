@@ -35,9 +35,9 @@ public class ItemController {
         return new ResponseUtil(200,"Updated",null);
     }
 
-//    @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseUtil deleteItem(@RequestParam String id){
-//        itemService.deleteItem(id);
-//        return new ResponseUtil(200,"Deleted",null);
-//    }
+    @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil deleteItem(@RequestParam String id){
+        itemService.deleteItem(id);
+        return new ResponseUtil(200,"Deleted",null);
+    }
 }

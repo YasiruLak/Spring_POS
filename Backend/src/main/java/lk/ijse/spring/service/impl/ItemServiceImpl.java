@@ -51,7 +51,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItem(String id) {
-
+        if (itemRepo.existsById(id)){
+            itemRepo.deleteById(id);
+        }else {
+            throw new RuntimeException("Please check the Item Code.. No Such Item..!");
+        }
     }
 
     @Override
