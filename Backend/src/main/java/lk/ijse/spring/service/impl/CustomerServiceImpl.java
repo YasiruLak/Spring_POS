@@ -55,7 +55,11 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO searchCustomer(String id) {
-        return null;
+        if (repo.existsById(id)){
+            return mapper.map(repo.findById(id).get(), CustomerDTO.class);
+        }else {
+            throw new RuntimeException("No Customer For " + id + " ..!");
+        }
     }
 
     @Override

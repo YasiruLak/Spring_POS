@@ -41,4 +41,9 @@ public class CustomerController {
         customerService.updateCustomer(customerDTO);
         return new ResponseUtil(200,"Updated",null);
     }
+
+    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil searchCustomer(@PathVariable String id){
+        return new ResponseUtil(200,"OK", customerService.searchCustomer(id));
+    }
 }
