@@ -26,6 +26,18 @@ public class ItemController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil saveItem(@ModelAttribute ItemDTO itemDTO){
         itemService.saveItem(itemDTO);
-        return new ResponseUtil(200,"OK",null);
+        return new ResponseUtil(200,"Saved",null);
     }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil updateItem(@RequestBody ItemDTO itemDTO){
+        itemService.updateItem(itemDTO);
+        return new ResponseUtil(200,"Updated",null);
+    }
+
+//    @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseUtil deleteItem(@RequestParam String id){
+//        itemService.deleteItem(id);
+//        return new ResponseUtil(200,"Deleted",null);
+//    }
 }

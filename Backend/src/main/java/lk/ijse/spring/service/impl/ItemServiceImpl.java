@@ -41,7 +41,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void updateItem(ItemDTO dto) {
-
+        if (itemRepo.existsById(dto.getCode())){
+            Item map = mapper.map(dto, Item.class);
+            itemRepo.save(map);
+        }else {
+            throw new RuntimeException("No Such a Item..!");
+        }
     }
 
     @Override
