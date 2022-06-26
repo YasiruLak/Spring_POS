@@ -35,4 +35,10 @@ public class CustomerController {
         customerService.saveCustomer(customerDTO);
         return new ResponseUtil(200,"Saved",null);
     }
+
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil updateCustomer(@ModelAttribute CustomerDTO customerDTO){
+        customerService.updateCustomer(customerDTO);
+        return new ResponseUtil(200,"Updated",null);
+    }
 }
