@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap');
+
+
+*{
+    font-family: Ubuntu;
+}
+
+.navColor{
+    background: #576574;
+}
+
+.nav-item{
+    font-size: 28px;
+    padding-right: 8px;
+}
+
+.form{
+    align-items: center;
+}
+
+.button{
+    text-align: right;
+}
+
+.customer{
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+.item{
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+.order{
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.placeOrder{
+    right: 0;
+    bottom: 0;
+    text-align: right;
+}
+
+
+#total{
+    font-size: 30px;
+    color: #3d98ef;
+}
+
+#total-text{
+    color: #3d98ef !important;
+    font-size: 13px !important;
+}
+
+#total-text1{
+    color: #ef5350 !important;
+    font-size: 13px !important;
+}
+
+#subtotal{
+    color: #ef5350 !important;
+    font-size: 30px !important;
+}
+
+#contentBox{
+    margin-left: 900px;
+}
+
+.card-header{
+    color: white !important;
+}
+
+.control-error {
+    color: red;
+    font-size: 0.9em;
+
+}
+
