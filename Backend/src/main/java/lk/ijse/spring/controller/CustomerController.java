@@ -46,4 +46,10 @@ public class CustomerController {
     public ResponseUtil searchCustomer(@PathVariable String id){
         return new ResponseUtil(200,"OK", customerService.searchCustomer(id));
     }
+
+    @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil deleteCustomer(@RequestParam String id){
+        customerService.deleteCustomer(id);
+        return new ResponseUtil(200,"Deleted",null);
+    }
 }
