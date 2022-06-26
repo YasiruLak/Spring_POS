@@ -1,6 +1,7 @@
 package lk.ijse.spring.service.impl;
 
 import lk.ijse.spring.dto.ItemDTO;
+import lk.ijse.spring.entity.Item;
 import lk.ijse.spring.repo.ItemRepo;
 import lk.ijse.spring.service.ItemService;
 import org.modelmapper.ModelMapper;
@@ -30,7 +31,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void saveItem(ItemDTO dto) {
-
+        if (!itemRepo.existsById(dto.getCode())){
+            Item map = mapper.map(dto, Item.class);
+            itemRepo.save(map);
+        }else {
+            throw new RuntimeException("Item Already Exist..!");
+        }
     }
 
     @Override

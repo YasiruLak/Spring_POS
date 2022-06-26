@@ -1,10 +1,11 @@
 package lk.ijse.spring.controller;
 
+import lk.ijse.spring.dto.ItemDTO;
 import lk.ijse.spring.service.ItemService;
+import lk.ijse.spring.utill.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author : Yasiru Dahanayaka
@@ -21,4 +22,10 @@ public class ItemController {
 
     @Autowired
     ItemService itemService;
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil saveItem(@ModelAttribute ItemDTO itemDTO){
+        itemService.saveItem(itemDTO);
+        return new ResponseUtil(200,"OK",null);
+    }
 }
