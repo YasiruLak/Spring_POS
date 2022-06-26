@@ -46,4 +46,9 @@ public class ItemController {
         ItemDTO itemDTO = itemService.searchItem(id);
         return new ResponseUtil(200,"Found",itemDTO);
     }
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getAllItem(){
+        return new ResponseUtil(200,"Loaded",itemService.getAllItem());
+    }
 }
