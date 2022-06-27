@@ -1,3 +1,5 @@
+var baseurl = "http://localhost:8080/Backend_war_exploded/api/v1/orders"
+
 function generateOrderID() {
     $("#txtOrderID").val("O00-0001");
     $.ajax({
@@ -62,11 +64,11 @@ function loadItemComboBoxData() {
     $("#txtOrderItemCode").append($("<option></option>").attr("value", 0).text("Select Item"));
     let count = 0;
     $.ajax({
-        url: "item?option=GETALL",
+        url: "http://localhost:8080/Backend_war_exploded/api/v1/item",
         method: "GET",
         success: function (res) {
             for (const item of res.data) {
-                $("#txtOrderItemCode").append($("<option></option>").attr("value", count).text(item.itemCode));
+                $("#txtOrderItemCode").append($("<option></option>").attr("value", count).text(item.code));
                 count++;
             }
         },
@@ -82,7 +84,7 @@ function loadCustomerComboBoxData() {
     $("#txtOrderCusID").append($("<option></option>").attr("value", 0).text("Select Customer"));
     let count = 0;
     $.ajax({
-        url: "customer?option=GETALL",
+        url: "http://localhost:8080/Backend_war_exploded/api/v1/customer",
         method: "GET",
         success: function (res) {
             for (const customer of res.data) {
@@ -105,7 +107,7 @@ $("#txtOrderCusID").click(function () {
 
 
     $.ajax({
-        url: "customer?option=GETALL",
+        url: "http://localhost:8080/Backend_war_exploded/api/v1/customer",
         method: "GET",
         success: function (resp) {
             for (const customer of resp.data) {
@@ -137,14 +139,14 @@ $("#txtOrderItemCode").click(function () {
     let price = $("#txtOrderItemPrice").val();
 
     $.ajax({
-        url: "item?option=GETALL",
+        url: "http://localhost:8080/Backend_war_exploded/api/v1/item",
         method: "GET",
         success: function (resp) {
             for (const item of resp.data) {
-                if (item.itemCode == id) {
+                if (item.code == id) {
 
                     name = item.name;
-                    qtyOnHand = item.qtyOnHand;
+                    qtyOnHand = item.qty;
                     price = item.price;
 
                     $("#txtOrderItemName").val(name);
