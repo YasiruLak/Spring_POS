@@ -1,4 +1,4 @@
-var baseurl = "http://localhost:8080/13_Model_Mapper_war/api/v1/customer"
+var baseurl = "http://localhost:8080/Backend_war_exploded/api/v1/customer"
 
 loadAllCustomer();
 // $("#btnSaveCustomer").attr('disabled', true);

@@ -29,7 +29,7 @@ public class ItemController {
         return new ResponseUtil(200,"Saved",null);
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil updateItem(@RequestBody ItemDTO itemDTO){
         itemService.updateItem(itemDTO);
         return new ResponseUtil(200,"Updated",null);

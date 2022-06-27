@@ -29,7 +29,7 @@ import javax.sql.DataSource;
  * @since : 0.1.0
  **/
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "lk.ijse.spring.repo")
 @EnableTransactionManagement
 @PropertySource("classpath:application.properties")
 public class JPAConfig {
@@ -48,7 +48,12 @@ public class JPAConfig {
 
     @Bean
     public DataSource dataSource() throws NamingException {
-      return (DataSource) new JndiTemplate().lookup("java:comp/env/jdbc/pool");
+        DriverManagerDataSource dataSource= new DriverManagerDataSource();
+        dataSource.setUrl(environment.getRequiredProperty("my.app.url"));
+        dataSource.setUsername(environment.getRequiredProperty("my.app.username"));
+        dataSource.setPassword(environment.getRequiredProperty("my.app.password"));
+        dataSource.setDriverClassName(environment.getRequiredProperty("my.app.driverclassname"));
+        return dataSource;
     }
 
     @Bean
