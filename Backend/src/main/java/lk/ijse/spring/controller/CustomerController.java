@@ -24,7 +24,6 @@ public class CustomerController {
     @Autowired
     CustomerService customerService;
 
-    @ResponseStatus(HttpStatus.FOUND)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getAllCustomers(){
         return new ResponseUtil(200,"OK",customerService.getAllCustomers());
@@ -37,20 +36,17 @@ public class CustomerController {
         return new ResponseUtil(200,"Saved",null);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil updateCustomer(@RequestBody CustomerDTO customerDTO){
         customerService.updateCustomer(customerDTO);
         return new ResponseUtil(200,"Updated",null);
     }
 
-    @ResponseStatus(HttpStatus.FOUND)
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil searchCustomer(@PathVariable String id){
-        return new ResponseUtil(200,"OK", customerService.searchCustomer(id));
+        return new ResponseUtil(200,"Loaded", customerService.searchCustomer(id));
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @DeleteMapping(params = {"id"},produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil deleteCustomer(@RequestParam String id){
         customerService.deleteCustomer(id);

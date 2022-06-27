@@ -1,12 +1,9 @@
+var baseurl1 = "http://localhost:8080/Backend_war_exploded/api/v1/item"
+
 loadAllItem();
 
 $("#btnItemSave").click(function (){
-    let itemOb = {
-        "itemCode": $("#txtItemCode").val(),
-        "itemName": $("#txtItemName").val(),
-        "itemQty": $("#txtItemQuantity").val(),
-        "itemPrice": $("#txtItemUnitPrice").val()
-    };
+    let itemData = $("#itemForm").serialize();
 
     if ($("#txtItemCode").val() == '') {
         alert("Can not be Item Code empty");
@@ -18,27 +15,23 @@ $("#btnItemSave").click(function (){
         alert("Can not be Item Price empty");
     }else{
         $.ajax({
-            url:"item",
+            url:baseurl1,
             method:"POST",
-            contentType: "application/json",
-            data: JSON.stringify(itemOb),
+            data: itemData,
             success: function (res){
                 if (res.status == 200){
                     loadAllItem();
                     alert(res.message);
                     resetItem();
-                }else{
-                    alert(res.data);
                 }
+                loadAllItem();
             },
-            error: function (ob, textStatus, error) {
-                console.log(ob);
-                console.log(textStatus);
-                console.log(error);
+            error: function (ob) {
+                alert(ob.responseJSON.message);
+                loadAllItem();
             }
         });
     }
-
 });
 
 $("#btnGetAllItem").click(function (){
@@ -52,6 +45,7 @@ function resetItem(){
     $("#txtItemName").val("");
     $("#txtItemUnitPrice").val("");
     $("#txtItemQuantity").val("");
+    $("#txtSearchItem").val("");
 }
 
 function bindClickEvent() {
@@ -74,17 +68,18 @@ function bindClickEvent() {
 function loadAllItem(){
     $("#itemToTable").empty();
     $.ajax({
-        url:"item?option=GETALL",
+        url:baseurl1,
         method:"GET",
         success:function (resp){
             for (const item of resp.data){
-                let row = `<tr><td>${item.itemCode}</td><td>${item.name}</td><td>${item.qtyOnHand}</td><td>${item.price}</td></tr>`;
+                let row = `<tr><td>${item.code}</td><td>${item.name}</td><td>${item.qty}</td><td>${item.price}</td></tr>`;
                 $("#itemToTable").append(row);
 
             }
             bindClickEvent();
-
-
+        },
+        error: function (ob) {
+            alert(ob.responseJSON.message);
         }
     });
 }
@@ -93,26 +88,20 @@ $("#btnItemDelete").click(function (){
     let itemCode = $("#txtItemCode").val();
 
     $.ajax({
-        url: "item?itemCode=" + itemCode,
+        url: baseurl1 + "?id=" + itemCode,
         method: "DELETE",
 
         success: function (res) {
-            console.log(res);
             if (res.status == 200) {
                 alert(res.message);
                 resetItem();
                 loadAllItem();
-            } else if (res.status == 400) {
-                alert(res.data);
-            } else {
-                alert(res.data);
             }
-
+            loadAllItem();
         },
-        error: function (ob, status, t) {
-            console.log(ob);
-            console.log(status);
-            console.log(t);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
+            loadAllItem();
         }
     });
 });
@@ -120,13 +109,13 @@ $("#btnItemDelete").click(function (){
 
 $("#btnItemUpdate").click(function (){
     let itemOb = {
-        itemCode: $("#txtItemCode").val(),
-        itemName: $("#txtItemName").val(),
-        itemQty: $("#txtItemQuantity").val(),
-        itemPrice: $("#txtItemUnitPrice").val()
+        code: $("#txtItemCode").val(),
+        name: $("#txtItemName").val(),
+        qty: $("#txtItemQuantity").val(),
+        price: $("#txtItemUnitPrice").val()
     };
     $.ajax({
-        url: "item",
+        url: baseurl1,
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(itemOb),
@@ -135,16 +124,14 @@ $("#btnItemUpdate").click(function (){
                 alert(res.message);
                 resetItem();
                 loadAllItem();
-            } else if (res.status == 400){
-                alert(res.message);
-            } else {
-                alert(res.data);
             }
+            loadAllItem();
         },
-        error: function (ob, errorStus) {
-            console.log(ob);
-            console.log(errorStus);
+        error: function (ob) {
+            alert(ob.responseJSON.message);
+            loadAllItem();
         }
+
     });
 });
 
@@ -152,10 +139,11 @@ $("#btnItemSearch").click(function (){
     let itemCode = $("#txtSearchItem").val();
     $("#itemToTable").empty();
     $.ajax({
-        url:"item?option=SEARCH&itemCode=" + itemCode,
+        url:baseurl1 + "/" + itemCode,
         method:"GET",
         success:function (resp){
-                let row = `<tr><td>${resp.itemCode}</td><td>${resp.name}</td><td>${resp.qtyOnHand}</td><td>${resp.price}</td></tr>`;
+            var item = resp.data;
+                let row = `<tr><td>${item.code}</td><td>${item.name}</td><td>${item.qty}</td><td>${item.price}</td></tr>`;
                 $("#itemToTable").append(row);
 
             bindClickEvent();
