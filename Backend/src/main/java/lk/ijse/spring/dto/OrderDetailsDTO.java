@@ -1,31 +1,29 @@
-package lk.ijse.spring.entity;
+package lk.ijse.spring.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.sql.Date;
 
 /**
  * @author : Yasiru Dahanayaka
  * @name : Spring_POS
- * @date : 6/26/2022
+ * @date : 6/27/2022
  * @month : 06
  * @year : 2022
  * @since : 0.1.0
  **/
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 @ToString
-public class Item implements SuperEntity{
+public class OrderDetailsDTO {
 
-    @Id
-    private String code;
-    private String name;
+    private String orderId;
+    private String iCode;
     private int qty;
-    private double price;
+    private double unitPrice;
+    private double total;
 }
