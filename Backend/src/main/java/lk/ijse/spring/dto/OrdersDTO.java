@@ -24,8 +24,8 @@ import java.util.List;
 @ToString
 public class OrdersDTO {
 
-    private String orderId;
-    private String custId;
+    private String oId;
+    private CustomerDTO customer;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private double total;

@@ -21,7 +21,7 @@ import java.sql.Date;
 @ToString
 public class OrderDetailsDTO {
 
-    private String orderId;
+    private String oId;
     private String iCode;
     private int qty;
     private double unitPrice;

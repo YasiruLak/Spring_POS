@@ -1,23 +1,25 @@
-var baseurl = "http://localhost:8080/Backend_war_exploded/api/v1/orders"
+var baseurl2 = "http://localhost:8080/Backend_war_exploded/api/v1/purchase_Orders"
 
 function generateOrderID() {
     $("#txtOrderID").val("O00-0001");
     $.ajax({
-        url: "orders?option=GETID",
+        url: baseurl2,
         method: "GET",
         success: function (resp) {
-                let orderId = resp.orderId;
+            for (const orders of resp.data) {
+                let orderId = orders.oId;
                 let tempId = parseInt(orderId.split("-")[1]);
-                tempId = tempId+1;
-                if (tempId <= 9){
-                    $("#txtOrderID").val("O00-000"+tempId);
-                }else if (tempId <= 99) {
+                tempId = tempId + 1;
+                if (tempId <= 9) {
+                    $("#txtOrderID").val("O00-000" + tempId);
+                } else if (tempId <= 99) {
                     $("#txtOrderID").val("O00-00" + tempId);
-                }else if (tempId <= 999){
+                } else if (tempId <= 999) {
                     $("#txtOrderID").val("O00-0" + tempId);
-                }else {
-                    $("#txtOrderID").val("O00-"+tempId);
+                } else {
+                    $("#txtOrderID").val("O00-" + tempId);
                 }
+            }
         },
         error: function (ob, statusText, error) {
 
@@ -30,17 +32,16 @@ generateOrderID();
 function loadAllOrders(){
     $("#orderTable").empty();
     $.ajax({
-        url: "orders?option=GETALL",
+        url: baseurl2,
         method: "GET",
         success: function (resp) {
             for (const orders of resp.data) {
-
-                let row = `<tr><td>${orders.orderId}</td><td>${orders.cid}</td><td>${orders.orderDate}</td><td>
+                let row = `<tr><td>${orders.oId}</td><td>${orders.custId}</td><td>${orders.date}</td><td>
                 ${orders.total}</td><td>${orders.discount}</td><td>${orders.subTotal}</td></tr>`;
                 $("#orderTable").append(row);
 
             }
-            bindOrderDetailsClickEvent();
+            // bindOrderDetailsClickEvent();
         }
     });
 }
@@ -172,7 +173,7 @@ function bindOrderClickEvent() {
             url: "item?option=SEARCH&itemCode=" + itemCode,
             method: "GET",
             success: function (resp) {
-                    let avQty = resp.qtyOnHand;
+                    let avQty = resp.qty;
                     let newQty = avQty - qty;
                 parseInt($("#txtOrderItemQtyOnHand").val(newQty));
             }
@@ -341,9 +342,9 @@ $("#btnSubmitOrder").click(function () {
         for (let i = 0; i < $("#addToCartTable > tr").length; i++) {
             var OrderDetail = {
                 oId : $("#txtOrderID").val(),
-                itemCode : $("#addToCartTable > tr").children(':nth-child(1)')[i].innerText,
+                iCode : $("#addToCartTable > tr").children(':nth-child(1)')[i].innerText,
                 qty : $("#addToCartTable > tr").children(':nth-child(4)')[i].innerText,
-                price : $("#addToCartTable > tr").children(':nth-child(3)')[i].innerText,
+                unitPrice : $("#addToCartTable > tr").children(':nth-child(3)')[i].innerText,
                 total : $("#addToCartTable > tr").children(':nth-child(5)')[i].innerText
 
             }
@@ -351,34 +352,41 @@ $("#btnSubmitOrder").click(function () {
         }
 
         var orderOb = {
-            orderID:$("#txtOrderID").val(),
-            cId:$("#txtOrderCusID option:selected").text(),
-            orderDate:$("#txtOrderDate").val(),
+            oId:$("#txtOrderID").val(),
+            custId:$("#txtOrderCusID option:selected").text(),
+            date:$("#txtOrderDate").val(),
             total:$("#total").text(),
             discount:discount.toString(),
             subTotal:$("#subtotal").text(),
-            ODetail : orderDetails
-        };
+            orderDetails : orderDetails
+        }
+
+        console.log(orderOb);
 
         if ($("#txtCash").val() == '') {
             alert("Please Enter Cash");
         }else {
             $.ajax({
-                url: "orders",
+                url: baseurl2,
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(orderOb),
                 success: function (resp) {
-                    manageBalance();
-                    itemTextFieldClear();
-                    customerTextFieldClear();
-                    generateOrderID();
-                    $("#addToCartTable").empty();
-                    alert("Successfully Added");
+                    if (resp.code==200){
+                        alert(resp.message);
+                        manageBalance();
+                        itemTextFieldClear();
+                        customerTextFieldClear();
+                        generateOrderID();
+                        balanceTextFieldClear();
+                        $("#addToCartTable").empty();
+
+                    }
 
                 },
                 error: function (ob, textStatus, error) {
-                    alert(textStatus);
+                    alert(ob.responseJSON.message);
+                    console.log(ob.responseJSON.message);
                 }
             });
 
@@ -410,6 +418,12 @@ function customerTextFieldClear() {
     $("#txtOrderCusName").val("");
     $("#txtOrderCusContact").val("");
     $("#txtOrderCusAddress").val("");
+}
+
+function balanceTextFieldClear(){
+    $("#txtBalance").val("");
+    $("#txtCash").val("");
+    $("#txtDiscount").val("");
 }
 
 function bindOrderDetailsClickEvent(){

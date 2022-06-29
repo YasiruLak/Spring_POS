@@ -1,14 +1,16 @@
 package lk.ijse.spring.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lk.ijse.spring.dto.OrderDetailsDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,20 +26,20 @@ import java.util.List;
 @Data
 @Entity
 @ToString
-public class Orders implements SuperEntity{
+public class Orders{
 
     @Id
-    private String orderId;
+    private String oId;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private double total;
     private double discount;
     private double subTotal;
-
     @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH})
-    @JoinColumn(name = "customerId",referencedColumnName = "id",nullable = false)
+    @JoinColumn(name = "custId",referencedColumnName = "id",nullable = false)
     private Customer customer;
 
-    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
-    private List<OrderDetails> orderDetails;
+    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderDetails> orderDetails = new ArrayList<>();
+
 }

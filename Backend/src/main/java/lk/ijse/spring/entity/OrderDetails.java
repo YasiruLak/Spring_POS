@@ -5,10 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author : Yasiru Dahanayaka
@@ -23,10 +21,11 @@ import javax.persistence.ManyToOne;
 @Data
 @Entity
 @ToString
-public class OrderDetails implements SuperEntity{
+@IdClass(OrderItem_PK.class)
+public class OrderDetails{
 
     @Id
-    private String orderId;
+    private String oId;
     @Id
     private String iCode;
     private int qty;
@@ -34,11 +33,11 @@ public class OrderDetails implements SuperEntity{
     private double total;
 
     @ManyToOne
-    @JoinColumn(name = "orderId",referencedColumnName = "orderId",insertable = false,updatable = false)
+    @JoinColumn(name = "oId",referencedColumnName = "oId",insertable = false,updatable = false)
     private Orders orders;
-
     @ManyToOne
     @JoinColumn(name = "iCode",referencedColumnName = "code",insertable = false,updatable = false)
     private Item items;
+
 
 }

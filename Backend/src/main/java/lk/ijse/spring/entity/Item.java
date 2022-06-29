@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author : Yasiru Dahanayaka
@@ -21,11 +22,13 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Data
 @ToString
-public class Item implements SuperEntity{
+public class Item{
 
     @Id
     private String code;
     private String name;
     private int qty;
     private double price;
+//    @OneToMany(mappedBy = "item")
+//    private List<OrderDetails> orderList = new ArrayList();
 }

@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * @author : Yasiru Dahanayaka
@@ -18,7 +19,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Data
 @ToString
-public class Customer implements SuperEntity{
+public class Customer{
 
     @Id
     private String id;
