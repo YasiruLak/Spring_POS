@@ -1,4 +1,5 @@
 var baseurl2 = "http://localhost:8080/Backend_war_exploded/api/v1/purchase_Orders"
+var baseurlCus = "http://localhost:8080/Backend_war_exploded/api/v1/customer"
 
 function generateOrderID() {
     $("#txtOrderID").val("O00-0001");
@@ -351,46 +352,67 @@ $("#btnSubmitOrder").click(function () {
             orderDetails.push(OrderDetail);
         }
 
-        var orderOb = {
-            oId:$("#txtOrderID").val(),
-            custId:$("#txtOrderCusID option:selected").text(),
-            date:$("#txtOrderDate").val(),
-            total:$("#total").text(),
-            discount:discount.toString(),
-            subTotal:$("#subtotal").text(),
-            orderDetails : orderDetails
-        }
-
-        console.log(orderOb);
-
-        if ($("#txtCash").val() == '') {
-            alert("Please Enter Cash");
-        }else {
-            $.ajax({
-                url: baseurl2,
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(orderOb),
-                success: function (resp) {
-                    if (resp.code==200){
-                        alert(resp.message);
-                        manageBalance();
-                        itemTextFieldClear();
-                        customerTextFieldClear();
-                        generateOrderID();
-                        balanceTextFieldClear();
-                        $("#addToCartTable").empty();
-
+        let customerID = $("#txtOrderCusID option:selected").text()
+        $.ajax({
+            url: baseurlCus + "/" + customerID,
+            method: "GET",
+            success: function (response) {
+                if (response.code==200) {
+                    let cusOb = {
+                        id: response.data.id,
+                        name: response.data.name,
+                        address: response.data.address,
+                        contact: response.data.contact,
                     }
 
-                },
-                error: function (ob, textStatus, error) {
-                    alert(ob.responseJSON.message);
-                    console.log(ob.responseJSON.message);
-                }
-            });
+                    var orderOb = {
+                        oId: $("#txtOrderID").val(),
+                        customer: response.data,
+                        date: $("#txtOrderDate").val(),
+                        total: $("#total").text(),
+                        discount: discount.toString(),
+                        subTotal: $("#subtotal").text(),
+                        orderDetails: orderDetails
+                    }
 
-        }
+                    console.log(orderOb);
+
+                    if ($("#txtCash").val() == '') {
+                        alert("Please Enter Cash");
+                    } else {
+                        $.ajax({
+                            url: baseurl2,
+                            method: "POST",
+                            contentType: "application/json",
+                            dataType: "json",
+                            data: JSON.stringify(orderOb),
+                            success: function (resp) {
+                                if (resp.code == 200) {
+                                    alert(resp.message);
+                                    manageBalance();
+                                    itemTextFieldClear();
+                                    customerTextFieldClear();
+                                    generateOrderID();
+                                    balanceTextFieldClear();
+                                    $("#addToCartTable").empty();
+
+                                }
+
+                            },
+                            error: function (ob, textStatus, error) {
+                                alert(ob.responseJSON.message);
+                                console.log(ob.responseJSON.message);
+                            }
+                        });
+                    }
+                }
+            },
+
+            error: function (ob) {
+                alert(ob.responseJSON.message);
+            }
+        });
+
     }
 
 });

@@ -1,5 +1,7 @@
 package lk.ijse.spring.dto;
 
+import lk.ijse.spring.entity.Item;
+import lk.ijse.spring.entity.Orders;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

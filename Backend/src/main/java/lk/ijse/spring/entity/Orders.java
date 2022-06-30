@@ -30,16 +30,15 @@ public class Orders{
 
     @Id
     private String oId;
+    @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH})
+    @JoinColumn(name = "custId",referencedColumnName = "id",nullable = false)
+    private Customer customer;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     private double total;
     private double discount;
     private double subTotal;
-    @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH})
-    @JoinColumn(name = "custId",referencedColumnName = "id",nullable = false)
-    private Customer customer;
-
-    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderDetails> orderDetails = new ArrayList<>();
+    @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetails;
 
 }

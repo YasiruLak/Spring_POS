@@ -29,6 +29,5 @@ public class Item{
     private String name;
     private int qty;
     private double price;
-//    @OneToMany(mappedBy = "item")
-//    private List<OrderDetails> orderList = new ArrayList();
+
 }
